@@ -1,13 +1,13 @@
 ## Broccoli & Co.
 A landing page for Broccoli & Co.
 
-recommand node version: `node 16`
+recommended node version: `node v16`
 
-dev server:
+#### dev server:
 `npm start`
 
-run test:
+#### run test:
 `npm test`
 
-build:
+#### build:
 `npm run build`

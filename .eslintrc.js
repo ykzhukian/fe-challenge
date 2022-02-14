@@ -23,6 +23,11 @@ module.exports = {
       "interface"
     ],
     "react/react-in-jsx-scope": "off",
+    "indent": "off",
+    '@typescript-eslint/indent': [
+      'error',
+      2
+    ],
   },
   "settings": {
     "import/resolver": {

@@ -12,6 +12,16 @@
   &:not(.visible) {
     display: none;
   }
+
+  &-close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+    background: url('../../assets/images/close-btn.png') no-repeat center / cover;
+  }
 }
 
 .modal-trigger {

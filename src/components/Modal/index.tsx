@@ -19,9 +19,12 @@ const Modal = ({
   return (
     <div className="modal-wrapper">
       <span className={classnames('modal-mask', { visible })} onClick={handleVisibleToggle} />
+      {/* the popup modal */}
       <div className={classnames('modal', { visible })}>
+        <span className="modal-close-btn" onClick={handleVisibleToggle} />
         {content}
       </div>
+      {/* modal trigger */}
       <div className="modal-trigger" onClick={handleVisibleToggle}>
         {children}
       </div>

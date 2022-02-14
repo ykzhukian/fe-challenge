@@ -1,37 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
 import classnames from 'classnames'
 
 import errorSrc from '@/assets/images/close.png'
 import correctSrc from '@/assets/images/check.png'
 
 const FormItem = ({
+  value,
   dataKey,
-  formValues,
+  errorMap,
   placeholder,
-  validator,
-  onValidate,
+  submitAttempted,
   onChange
-}: FormItemProps) => {
-  const [errorMsg, setErrorMsg] = useState('')
+}: InviteForm.FormItemProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value)
-    // validate on change
-    const error = validator(e.target.value) || ''
-    setErrorMsg(error)
-
-    if (error) {
-      onValidate(dataKey, error)
-    }
   }
 
-  const value = formValues[dataKey]
+  const errorMsg = errorMap.get(dataKey)
+  const showError = submitAttempted && errorMsg
 
   return (
-    <div className={classnames('form-item', { error: errorMsg })}>
+    <div className={classnames('form-item', { error: showError })}>
       <input value={value} onChange={handleChange} type="text" placeholder={placeholder} />
-      {errorMsg && <span className="status-icon"><img src={errorSrc} alt="error icon" /></span>}
-      {value !== '' && !errorMsg && <span className="status-icon"><img src={correctSrc} alt="valid icon" /></span>}
-      {errorMsg && <span className="form-error">{errorMsg}</span>}
+      <span className="status-icon">
+        {showError && <img src={errorSrc} alt="error icon" />}
+        {value !== '' && !errorMsg && <img src={correctSrc} alt="valid icon" />}
+      </span>
+      {showError && <span className="form-error">{errorMsg}</span>}
     </div>
   )
 }
