@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react'
+import { ToastContainer } from 'react-toastify'
 import {
   BrowserRouter as Router,
   Route,
@@ -13,6 +14,7 @@ const baseRoute = process.env.REACT_APP_BASE_ROUTE
 
 const App = () => (
   <Router basename={baseRoute}>
+    <ToastContainer />
     <Suspense fallback={<div className="loading">Loading...</div>}>
       <Layout>
         <Routes>

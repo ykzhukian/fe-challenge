@@ -22,4 +22,9 @@ namespace InviteForm {
     placeholder?: string
   }
 
+  interface InviteApiParams {
+    name: string
+    email: string
+  }
+
 }

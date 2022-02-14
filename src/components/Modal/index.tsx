@@ -9,7 +9,7 @@ const Modal = ({
 }: React.PropsWithChildren<{
   content: React.ReactNode
 }>) => {
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
 
   const handleVisibleToggle = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()

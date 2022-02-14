@@ -2,6 +2,9 @@
 import React, { useState, useCallback } from 'react'
 import FormItem from './FormItem'
 import { isValidEmail } from '@/utils'
+import { requestInvite } from '@/api'
+import useRequest from '@/utils/useRequest'
+import correctSrc from '@/assets/images/check.png'
 
 import './index.scss'
 
@@ -36,11 +39,7 @@ const formItems: InviteForm.FormItemData[] = [{
   }
 }]
 
-const InvitationForm = ({
-  onSuccess
-}: {
-  onSuccess?: () => void
-}) => {
+const InvitationForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -48,6 +47,9 @@ const InvitationForm = ({
   })
   const [errorMap, setErrorMap] = useState<ErrorMap>(new Map())
   const [submitAttempted, setSubmitAttempted] = useState(false)
+  const { loading, result, sendRequest } = useRequest<InviteForm.InviteApiParams, string>({
+    request: requestInvite
+  })
 
   // should keep func reference when used in FormItem props
   const handleValidateError = useCallback((key: string, error: string) => {
@@ -62,24 +64,42 @@ const InvitationForm = ({
     }
   }, [])
 
-  const handleValidate = () => {
+  const handleValidate = (): boolean => {
+    let isValid = true
     formItems.forEach(({ dataKey, validator }) => {
       const error = validator(formData[dataKey], formData)
-      console.log('error', formData, error)
+      if (error) {
+        isValid = false
+      }
       handleValidateError(dataKey, error)
     })
+    return isValid
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitAttempted(true)
     // validate
-    handleValidate()
-    if (errorMap.size === 0) {
+    const isValid = handleValidate()
+    if (isValid) {
       // submit form
-    } else {
-      console.log('errorMap', errorMap)
+      sendRequest({
+        name: formData.name,
+        email: formData.email
+      })
     }
+  }
+
+  if (result) {
+    return (
+      <div className="invitation-form">
+        <p className="form-success-message">
+          <img src={correctSrc} alt="valid icon" />
+          We have received your request.
+        </p>
+        <p className="form-success-message">Thank you!</p>
+      </div>
+    )
   }
 
   return (
@@ -102,7 +122,9 @@ const InvitationForm = ({
             }}
           />
         ))}
-        <button type="submit" className="btn">Submit</button>
+        <button type="submit" className="btn" disabled={loading}>
+          {loading ? 'Loading...' : 'Send'}
+        </button>
       </form>
     </div>
   )

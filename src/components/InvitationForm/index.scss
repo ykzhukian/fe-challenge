@@ -59,6 +59,15 @@
     }
   }
 
+  .form-success-message {
+    text-align: center;
+    img {
+      width: 20px;
+      height: 20px;
+      transform: translate(-8px, 4px);
+    }
+  }
+
   button[type=submit] {
     color: rgba(#000, 0.5);;
     border: 1px solid rgba(#000, 0.5);
@@ -68,6 +77,12 @@
     &:hover {
       border: 1px solid #000;
       color: #000;
+    }
+
+    &:disabled {
+      border: 1px solid $light-gray;
+      color: $light-gray;
+      cursor: not-allowed;
     }
   }
 }
