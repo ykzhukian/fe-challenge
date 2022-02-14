@@ -105,7 +105,7 @@ const InvitationForm = () => {
   return (
     <div className="invitation-form">
       <p className="form-title">Request an invite</p>
-      <form onSubmit={handleSubmit}>
+      <form role="invite-form" onSubmit={handleSubmit}>
         {formItems.map(({ dataKey, placeholder, validator }) => (
           <FormItem
             key={dataKey}

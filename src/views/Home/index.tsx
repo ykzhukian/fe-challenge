@@ -12,7 +12,7 @@ const Home = () => (
       <Modal
         content={<InvitationForm />}
       >
-        <button className="request-btn btn">Request an invite</button>
+        <button role="cta-btn" className="request-btn btn">Request an invite</button>
       </Modal>
     </div>
   </div>

@@ -22,7 +22,7 @@ const Modal = ({
       {/* the popup modal */}
       <div className={classnames('modal', { visible })}>
         <span className="modal-close-btn" onClick={handleVisibleToggle} />
-        {content}
+        {visible && content}
       </div>
       {/* modal trigger */}
       <div className="modal-trigger" onClick={handleVisibleToggle}>
