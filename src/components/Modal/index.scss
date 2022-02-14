@@ -9,6 +9,11 @@
   min-width: 400px;
   z-index: 1;
 
+  @media screen and (max-width: $break-point-lg) {
+    min-width: 320px;
+    padding: 20px;
+  }
+
   &:not(.visible) {
     display: none;
   }
