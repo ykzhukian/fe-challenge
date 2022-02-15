@@ -11,6 +11,18 @@ module.exports = {
   eslint: {
     enable: true,
   },
+  style: {
+    postcss: {
+      loaderOptions: {
+        postcssOptions: {
+          plugins: [
+            'postcss-nested',
+            'autoprefixer',
+          ]
+        }
+      }
+    }
+  },
   webpack: {
     configure: {
       output: {
