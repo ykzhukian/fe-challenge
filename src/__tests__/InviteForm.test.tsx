@@ -1,11 +1,23 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import InvitationForm from '../components/InvitationForm'
 
-beforeEach(() => {
-  render(<InvitationForm />)
-})
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  rest.post('/prod/fake-auth', (req, res, ctx) => {
+    const response = res(ctx.status(200), ctx.json('registered mock'))
+    console.log('mock api:', response);
+    return response;
+  }),
+)
+
+beforeAll(() => server.listen())
+afterAll(() => server.close())
 
 test('invite form validation', () => {
+  render(<InvitationForm />)
+
   const form = screen.getByRole('invite-form')
   fireEvent.submit(form)
 
@@ -14,6 +26,8 @@ test('invite form validation', () => {
 })
 
 test('fill out different email address', () => {
+  render(<InvitationForm />)
+
   // fill out the email inputs with different emails
   fireEvent.change(screen.getByPlaceholderText('Email address'), {
     target: { value: 'test@email.com' },
@@ -28,20 +42,29 @@ test('fill out different email address', () => {
   expect(emailErrMsg).toBeInTheDocument()
 })
 
-test('submit invite form', () => {
+test('submit invite form', async () => {
+
+  const { getByText, getByPlaceholderText } = render(<InvitationForm />)
+
   // fill out the form correctly
-  fireEvent.change(screen.getByPlaceholderText(/full name/i), {
+  fireEvent.change(getByPlaceholderText(/full name/i), {
     target: { value: 'Mr Test' },
   })
-  fireEvent.change(screen.getByPlaceholderText('Email address'), {
+  fireEvent.change(getByPlaceholderText('Email address'), {
     target: { value: 'test@email.com' },
   })
-  fireEvent.change(screen.getByPlaceholderText('Confirm email address'), {
+  fireEvent.change(getByPlaceholderText('Confirm email address'), {
     target: { value: 'test@email.com' },
   })
 
-  const submitBtn = screen.getByText(/send/i)
+  const submitBtn = getByText(/send/i)
   fireEvent.click(submitBtn);
   expect(submitBtn).toHaveTextContent('Loading...')
+
+  await waitFor(() => {
+    expect(getByText("Thank you!")).toBeInTheDocument()
+    expect(submitBtn).not.toBeInTheDocument()
+  });
+
 })
 
