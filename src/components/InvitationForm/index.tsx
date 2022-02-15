@@ -8,6 +8,12 @@ import correctSrc from '@/assets/images/check.png'
 
 import './index.scss'
 
+const INITIAL_FORM_DATA = {
+  name: '',
+  email: '',
+  emailConfirm: ''
+}
+
 const formItems: InviteForm.FormItemData[] = [{
   dataKey: 'name',
   placeholder: 'Full name',
@@ -40,21 +46,24 @@ const formItems: InviteForm.FormItemData[] = [{
 }]
 
 const InvitationForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    emailConfirm: ''
-  })
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA)
   const [errorMap, setErrorMap] = useState<ErrorMap>(new Map())
   const [submitAttempted, setSubmitAttempted] = useState(false)
   const { loading, result, sendRequest } = useRequest<InviteForm.InviteApiParams, string>({
-    request: requestInvite
+    request: requestInvite,
+    onError: () => {
+      setFormData(INITIAL_FORM_DATA)
+    }
   })
 
   // should keep func reference when used in FormItem props
   const handleValidateError = useCallback((key: string, error: string) => {
     if (error) {
-      setErrorMap(map => map.set(key, error))
+      setErrorMap(map => {
+        const updateMap = new Map(map)
+        updateMap.set(key, error)
+        return updateMap
+      })
     } else {
       setErrorMap(map => {
         const updateMap = new Map(map)
