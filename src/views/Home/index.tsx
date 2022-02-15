@@ -11,9 +11,8 @@ const Home = () => (
       <p className="description">Be the first to know when we launch.</p>
       <Modal
         content={<InvitationForm />}
-      >
-        <button role="cta-btn" className="request-btn btn">Request an invite</button>
-      </Modal>
+        trigger={<button role="cta-btn" className="request-btn btn">Request an invite</button>}
+      />
     </div>
   </div>
 )

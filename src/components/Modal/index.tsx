@@ -4,11 +4,12 @@ import classnames from 'classnames'
 import './index.scss'
 
 const Modal = ({
-  children,
+  trigger,
   content
-}: React.PropsWithChildren<{
+}: {
   content: React.ReactNode
-}>) => {
+  trigger: React.ReactNode
+}) => {
   const [visible, setVisible] = useState(false)
 
   const handleVisibleToggle = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -26,7 +27,7 @@ const Modal = ({
       </div>
       {/* modal trigger */}
       <div className="modal-trigger" onClick={handleVisibleToggle}>
-        {children}
+        {trigger}
       </div>
     </div>
   )
